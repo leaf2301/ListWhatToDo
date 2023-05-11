@@ -8,8 +8,24 @@
 import Foundation
 
 class ListViewModel: ObservableObject {
-    @Published var items: [ListModel] = []
+    @Published var items: [ListModel] = [] {
+        didSet {
+            if let encoded = try? JSONEncoder().encode(items) {
+                UserDefaults.standard.set(encoded, forKey: "Keyy")
+            }
+        }
+    }
     
+    init() {
+        if let savedItems = UserDefaults.standard.data(forKey: "Keyy") {
+            if let decodedItem = try? JSONDecoder().decode([ListModel].self, from: savedItems) {
+                items = decodedItem
+                return
+            }
+        }
+        
+        items = []
+    }
     
     
     
@@ -21,5 +37,10 @@ class ListViewModel: ObservableObject {
     
     func moveRow(index: IndexSet, int: Int) {
         items.move(fromOffsets: index, toOffset: int)
+    }
+    
+    func addNote(text: String) {
+        let textNote = ListModel(itemName: text, isCompleted: false)
+        items.insert(textNote, at: 0)
     }
 }
