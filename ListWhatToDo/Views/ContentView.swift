@@ -13,6 +13,12 @@ struct ContentView: View {
     
     var body: some View {
         List {
+            if vm.items.isEmpty {
+                Text("""
+                     Click Add to begin...
+                    """)
+                    .foregroundColor(.gray.opacity(0.9))
+            }
             ForEach(vm.items) { item in
                 HStack {
                     
@@ -22,6 +28,7 @@ struct ContentView: View {
             .onDelete(perform: vm.deleteRow)
             .onMove(perform: vm.moveRow)
         }
+        .listStyle(.plain)
         .navigationTitle("Todo List 📝")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -29,7 +36,7 @@ struct ContentView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
-                    
+                    AddView()
                 } label: {
                     Text("Add")
                 }
