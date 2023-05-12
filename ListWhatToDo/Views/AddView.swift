@@ -14,6 +14,10 @@ struct AddView: View {
     
     @State private var textField: String = ""
     
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
+    @State private var alertShowing: Bool = false
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -24,26 +28,41 @@ struct AddView: View {
                     .cornerRadius(10)
                 
                 Button {
-                    vm.addNote(text: textField)
-                    dismiss()
+                    getItem()
+                    
                 } label: {
                     Text("save".uppercased())
                         .foregroundColor(.white)
                         .font(.headline)
                         .frame(height: 55)
                         .frame(maxWidth: .infinity)
-                        .background(checkAppropriate() ? Color.blue : Color.gray.opacity(0.9))
+                        .background(textField.count < 3 ? Color.gray.opacity(0.9): Color.accentColor)
                         .cornerRadius(10)
                 }
-                .disabled(!checkAppropriate())
             }
             .padding(14)
         }
         .navigationTitle("Add some note ✏️")
+        .alert(alertTitle, isPresented: $alertShowing) {
+            Button("OK") {}
+        } message: {
+            Text(alertMessage)
+        }
+    }
+    
+    func getItem() {
+        if checkAppropriate() {
+            vm.addNote(text: textField)
+            dismiss()
+        }
     }
     
     func checkAppropriate() -> Bool{
         if textField.count < 3 {
+            alertTitle = "Remind"
+            alertMessage = "Your content should contain at least 3 letters."
+            alertShowing = true
+            
             return false
         }
         return true
