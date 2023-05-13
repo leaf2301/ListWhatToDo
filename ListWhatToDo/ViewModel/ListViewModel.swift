@@ -43,4 +43,8 @@ class ListViewModel: ObservableObject {
         let textNote = ListModel(itemName: text, isCompleted: false)
         items.insert(textNote, at: 0)
     }
+    
+    func updateItem() {
+        
+    }
 }

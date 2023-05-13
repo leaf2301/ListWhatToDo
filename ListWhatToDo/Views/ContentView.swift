@@ -12,21 +12,27 @@ struct ContentView: View {
     @EnvironmentObject var vm: ListViewModel
     
     var body: some View {
-        List {
+        ZStack {
             if vm.items.isEmpty {
-               BeginView()
-            }
-            ForEach(vm.items) { item in
-                HStack {
-                    
-                    Text(item.itemName)
+                BeginView()
+            } else {
+                List {
+                    ForEach(vm.items) { item in
+                        ItemView(item: item)
+                            .onTapGesture {
+                                withAnimation(.linear){
+                                    
+                                }
+                            }
+                        
+                        
+                    }
+                    .onDelete(perform: vm.deleteRow)
+                    .onMove(perform: vm.moveRow)
                 }
-                .padding(.horizontal)
+                .listStyle(.plain)
             }
-            .onDelete(perform: vm.deleteRow)
-            .onMove(perform: vm.moveRow)
         }
-        .listStyle(.plain)
         .navigationTitle("Todo List 📝")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
