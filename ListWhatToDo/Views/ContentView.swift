@@ -21,7 +21,7 @@ struct ContentView: View {
                         ItemView(item: item)
                             .onTapGesture {
                                 withAnimation(.linear){
-                                    
+                                    vm.updateItem(item: item)
                                 }
                             }
                         
