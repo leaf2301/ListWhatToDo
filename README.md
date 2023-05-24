@@ -1,4 +1,9 @@
 # ListWhatToDo
 CheckList.iosApp
 
-CheckList task to do
+A small app gives people a reminder for what they have to do
+
+Animation
+MVVM
+
+![Uploading ListWhatToDo.gif…]()
